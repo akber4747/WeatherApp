@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchWeather } from '../actions/index.js';
 
-export default class SearchBar extends Component {
+class SearchBar extends Component {
     constructor(props){
         super(props);
 
@@ -10,10 +13,10 @@ export default class SearchBar extends Component {
 
         // the callback in the render() method means that "this" is bound to the incorrect context. This line here fixes that. we are here binding the "this" keyword to THIS COMPONENT'S CONTEXT
         this.onInputChange = this.onInputChange.bind(this);
+        this.onFormSubmit = this.onFormSubmit.bind(this);
     }
 
     onInputChange(event){
-        console.log(event.target.value);
         this.setState({
             term: event.target.value
         });
@@ -21,6 +24,9 @@ export default class SearchBar extends Component {
 
     onFormSubmit(event){
         event.preventDefault();
+        // this is where we need to get the weather... this is in our action creator! so we need to connect to redux
+        this.props.fetchWeather(this.state.term);
+        this.setState({term: ''});
     }
     
     render(){
@@ -40,3 +46,10 @@ export default class SearchBar extends Component {
     }
 
 }
+
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ fetchWeather }, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(SearchBar);
