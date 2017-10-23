@@ -1,4 +1,4 @@
-#Weather App
+# Weather App
 This is an exercise in React and Redux
 
 ```
